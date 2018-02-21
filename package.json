@@ -28,7 +28,7 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/creditkarma/thrift-server/tree/master/packages/vault-client"
+    "url": "https://github.com/creditkarma/vault-client"
   },
   "peerDependencies": {
     "@types/request-promise-native": "^1.0.12",
