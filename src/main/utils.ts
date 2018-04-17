@@ -2,10 +2,7 @@ import * as path from 'path'
 import { IHVConfig } from './types'
 
 function isObject(obj: any): boolean {
-    return (
-        obj !== null &&
-        typeof obj === 'object'
-    )
+    return obj !== null && typeof obj === 'object'
 }
 
 function merge<Base, Update>(base: Base, update: Update): Base & Update {
@@ -33,7 +30,7 @@ function merge<Base, Update>(base: Base, update: Update): Base & Update {
         }
     }
 
-    return (newObj as Base & Update)
+    return newObj as Base & Update
 }
 
 export function deepMerge<A, B>(a: A, b: B): A & B
@@ -51,11 +48,7 @@ export function resolveSecretPath(...parts: Array<string>): string {
 }
 
 export function removeLeadingTrailingSlash(str: string): string {
-    const tmp: string = (
-        (str.charAt(0) === '/') ?
-            str.substring(1, str.length) :
-            str
-    )
+    const tmp: string = str.charAt(0) === '/' ? str.substring(1, str.length) : str
 
     if (tmp.charAt(tmp.length - 1) === '/') {
         return tmp.substring(0, tmp.length - 1)

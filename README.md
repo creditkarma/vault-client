@@ -21,12 +21,14 @@ VaultClient provides two methods: get and set. Both methods return Promises.
 VaultClient expects the access token for Vault to be available in a local file. The path to this file is passed as an option.
 
 Available options:
-* apiVersion - API version to use. Currently this can only be 'v1'.
-* destination - The location of the Vault instance. Defaults to 'http://localhost:8200'.
-* mount - The mount at which secrets can be found. Defaults to 'secret'.
-* namespace - A namespace for secrets. This path will be prepended to all get/set requests. Defaults to ''.
-* tokenPath - The local file path to a file containing the Vault token. Defaults to '/tmp/token'.
-* requestOptions - Options passed to the underlying [Request library](https://github.com/request/request). The options can be overriden on a per-request basis by passing an optional final parameter to any of the service or client methods. This will be used to set up TLS.
+
+*   apiVersion - API version to use. Currently this can only be 'v1'.
+*   protocol - The protocol to use 'http' or 'https'. Defaults to 'http'.
+*   destination - The location of the Vault instance. Defaults to 'localhost:8200'.
+*   mount - The mount at which secrets can be found. Defaults to 'secret'.
+*   namespace - A namespace for secrets. This path will be prepended to all get/set requests. Defaults to ''.
+*   tokenPath - The local file path to a file containing the Vault token. Defaults to '/tmp/token'.
+*   requestOptions - Options passed to the underlying [Request library](https://github.com/request/request). The options can be overriden on a per-request basis by passing an optional final parameter to any of the service or client methods. This will be used to set up TLS.
 
 #### Mount vs Namespace
 
@@ -52,25 +54,26 @@ When reading values with VaultClient objects of this form are assumed. If there 
 import { IHVConfig, VaultClient } from '@creditkarma/vault-client'
 
 const options: IHVConfig = {
-  apiVersion: 'v1',
-  destination: 'http://localhost:8200',
-  mount: 'secret',
-  namespace: '',
-  tokenPath: '/tmp/token',
-  requestOptions: {
-    headers: {
-      host: 'localhost'
+    apiVersion: 'v1',
+    protocol: 'http',
+    destination: 'localhost:8200',
+    mount: 'secret',
+    namespace: '',
+    tokenPath: '/tmp/token',
+    requestOptions: {
+        headers: {
+            host: 'localhost'
+        }
     }
-  }
 }
 const client: VaultClient = new VaultClient(options)
 
 // Because we set a namespace this is actually written to 'secret/key'
 client.set('key', 'value').then(() => {
-  // value successfully written
-  client.get<string>('key').then((val: string) => {
-    // val = 'value'
-  })
+    // value successfully written
+    client.get<string>('key').then((val: string) => {
+        // val = 'value'
+    })
 })
 ```
 
@@ -81,9 +84,11 @@ VaultService provides more direct access to the raw Vault HTTP API. Method argum
 #### Options
 
 VaultService accepts a sub-set of the options that VaultClient accepts:
-* apiVersion
-* destination
-* requestOptions
+
+*   apiVersion
+*   protocol
+*   destination
+*   requestOptions
 
 #### Example
 
@@ -93,13 +98,14 @@ Like VaultClient all methods return Promises.
 import { IServiceConfig, VaultService } from '@creditkarma/vault-client'
 
 const options: IServiceConfig = {
-  apiVersion: 'v1',
-  destination: 'http://localhost:8200',
-  requestOptions: {
-    headers: {
-      host: 'localhost'
+    apiVersion: 'v1',
+    protocol: 'http',
+    destination: 'localhost:8200',
+    requestOptions: {
+        headers: {
+            host: 'localhost'
+        }
     }
-  }
 }
 const service: VaultService = new VaultService(options)
 
