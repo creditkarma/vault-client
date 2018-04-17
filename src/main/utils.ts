@@ -66,7 +66,8 @@ export function removeLeadingTrailingSlash(str: string): string {
 
 export const DEFAULT_CONFIG: IHVConfig = {
     apiVersion: 'v1',
-    destination: 'http://localhost:8200',
+    protocol: 'http',
+    destination: 'localhost:8200',
     mount: '/secret',
     namespace: '',
     tokenPath: '/tmp/token',
