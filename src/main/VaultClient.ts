@@ -7,7 +7,8 @@ import { VaultService } from './VaultService'
 
 export interface IVaultClientArgs {
     apiVersion?: 'v1'
-    destination?: string,
+    protocol?: 'http' | 'https'
+    destination?: string
     requestOptions?: CoreOptions
     mount?: string
     namespace?: string
