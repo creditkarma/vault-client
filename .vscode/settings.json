@@ -9,6 +9,7 @@
     "prettier.singleQuote": true,
     "prettier.printWidth": 110,
     "prettier.tabWidth": 4,
+    "prettier.semi": false,
     "files.exclude": {
       "**/.git": true,
       "**/.DS_Store": true,

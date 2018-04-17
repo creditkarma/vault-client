@@ -62,6 +62,7 @@ describe('Utils', () => {
       }
       const expected: IHVConfig = {
         apiVersion: 'v1',
+        protocol: 'http',
         destination: 'localhost:8000',
         mount: '/secret',
         namespace: 'path',
