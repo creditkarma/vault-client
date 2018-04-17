@@ -1,13 +1,13 @@
 import { CoreOptions } from 'request'
 import { getToken } from './discovery'
 import { HVInvalidResponse } from './errors'
-import { IHVConfig, IReadResult } from './types'
+import { HttpProtocol, IHVConfig, IReadResult } from './types'
 import * as utils from './utils'
 import { VaultService } from './VaultService'
 
 export interface IVaultClientArgs {
     apiVersion?: 'v1'
-    protocol?: 'http' | 'https'
+    protocol?: HttpProtocol
     destination?: string
     requestOptions?: CoreOptions
     mount?: string

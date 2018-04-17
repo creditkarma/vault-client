@@ -1,15 +1,17 @@
 import { CoreOptions } from 'request'
 
+export type HttpProtocol = 'http' | 'https'
+
 export interface IServiceConfig {
     apiVersion: 'v1'
-    protocol: 'http' | 'https'
+    protocol: HttpProtocol
     destination: string
     requestOptions: CoreOptions
 }
 
 export interface IHVConfig {
     apiVersion: 'v1'
-    protocol: 'http' | 'https'
+    protocol: HttpProtocol
     destination: string
     requestOptions: CoreOptions
     mount: string

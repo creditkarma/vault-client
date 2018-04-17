@@ -2,6 +2,7 @@ import { CoreOptions, OptionsWithUri, RequestResponse } from 'request'
 import * as rpn from 'request-promise-native'
 
 import {
+    HttpProtocol,
     IInitArgs,
     IInitResult,
     IListResult,
@@ -65,7 +66,7 @@ function fetch(options: OptionsWithUri, token?: string): Promise<any> {
 
 export interface IVaultServiceArgs {
     destination: string
-    protocol?: 'http' | 'https'
+    protocol?: HttpProtocol
     apiVersion?: 'v1'
     requestOptions?: CoreOptions
 }
