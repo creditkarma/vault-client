@@ -120,7 +120,7 @@ describe('VaultService', () => {
         })
         const httpsService: any = new VaultService(httpsConfig)
         it('should have multiple ca', done => {
-            expect(httpsService.requestOptions.ca.length).to.be.greaterThan(1)
+            expect(httpsService.defaultOptions.ca.length).to.be.greaterThan(1)
             done()
         })
     })

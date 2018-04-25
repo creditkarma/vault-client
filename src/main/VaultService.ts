@@ -87,7 +87,7 @@ export class VaultService {
     }: IVaultServiceArgs) {
         this.defaultOptions = requestOptions
         if (protocol === 'https') {
-            utils.deepMerge({
+            this.defaultOptions = utils.deepMerge({
                 ca: loadSystemCerts(),
             }, this.defaultOptions)
         }
