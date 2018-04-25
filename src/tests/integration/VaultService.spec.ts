@@ -113,4 +113,15 @@ describe('VaultService', () => {
                 .catch(done)
         })
     })
+
+    describe('https protocol', () => {
+        const httpsConfig = Object.assign(mockConfig, {
+            protocol: 'https',
+        })
+        const httpsService: any = new VaultService(httpsConfig)
+        it('should have multiple ca', done => {
+            expect(httpsService.requestOptions.ca.length).to.be.greaterThan(1)
+            done()
+        })
+    })
 })

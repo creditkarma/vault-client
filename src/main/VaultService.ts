@@ -17,6 +17,8 @@ import { HVFail, HVMissingResource } from './errors'
 
 import * as utils from './utils'
 
+import { loadSystemCerts } from './certs'
+
 const request = rpn.defaults({
     json: true,
     resolveWithFullResponse: true,
@@ -43,6 +45,8 @@ function fetch(options: OptionsWithUri, token?: string): Promise<any> {
                   },
               })
             : options
+
+    console.dir(requestOptions, { depth: null })
 
     return request(requestOptions).then(
         (res: RequestResponse) => {
@@ -82,6 +86,11 @@ export class VaultService {
         requestOptions = {},
     }: IVaultServiceArgs) {
         this.defaultOptions = requestOptions
+        if (protocol === 'https') {
+            utils.deepMerge({
+                ca: loadSystemCerts(),
+            }, this.defaultOptions)
+        }
         this.dest = `${protocol}://${destination}/${apiVersion}`
     }
 
