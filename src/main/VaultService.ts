@@ -46,8 +46,6 @@ function fetch(options: OptionsWithUri, token?: string): Promise<any> {
               })
             : options
 
-    console.dir(requestOptions, { depth: null })
-
     return request(requestOptions).then(
         (res: RequestResponse) => {
             switch (res.statusCode) {
