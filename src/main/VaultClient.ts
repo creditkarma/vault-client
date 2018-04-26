@@ -36,7 +36,7 @@ export class VaultClient {
                 if (result.data && result.data.value) {
                     return result.data.value
                 } else {
-                    console.warn('Invalid response from Vault: ', result.data.error)
+                    console.warn('Invalid response from Vault: ', result)
                     throw new HVInvalidResponse(key)
                 }
             })
