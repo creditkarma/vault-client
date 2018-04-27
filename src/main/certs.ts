@@ -33,7 +33,7 @@ const splitCa = (chain: string, split: string = '\n') => {
 }
 
 const loadOsxCerts = () => {
-    logger.log('[vault-client]: Loading certs from osx keychain')
+    logger.log('Loading certs from osx keychain')
     const keyChains = [
         '/Library/Keychains/System.keychain',
         '/System/Library/Keychains/SystemRootCertificates.keychain',
@@ -42,12 +42,12 @@ const loadOsxCerts = () => {
         .map((chain) => `security find-certificate -a -p ${chain}`)
         .map((cmd) => splitCa(childProcess.execSync(cmd, { encoding: 'utf8' })))
         .reduce((prev, curr) => prev.concat(curr), [])
-    logger.log('[vault-client]: Certs from osx keychain loaded')
+    logger.log('Certs from osx keychain loaded')
     return caList
 }
 
 const loadLinuxCerts = () => {
-    logger.log('[vault-client]: Loading system certs')
+    logger.log('Loading system certs')
     const caList: Array<string> = []
     for (const caFile of trustedCa) {
         if (fs.existsSync(caFile)) {
@@ -56,7 +56,7 @@ const loadLinuxCerts = () => {
         }
     }
 
-    logger.log('[vault-client]: System certs loaded')
+    logger.log('System certs loaded')
     return caList
 }
 
