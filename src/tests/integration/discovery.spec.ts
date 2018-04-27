@@ -30,6 +30,12 @@ describe('TokenDiscovery', () => {
         })
     })
 
+    after(done => {
+        fs.unlink(tokenFilePath, err => {
+            done()
+        })
+    })
+
     describe('getToken', () => {
         it('should retrieve the token from a specified file', done => {
             TokenDiscovery.getToken(mockConfig)
@@ -44,12 +50,6 @@ describe('TokenDiscovery', () => {
                     }
                 )
                 .catch(done)
-        })
-    })
-
-    after(done => {
-        fs.unlink(tokenFilePath, err => {
-            done()
         })
     })
 })

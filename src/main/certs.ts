@@ -1,6 +1,8 @@
 import * as childProcess from 'child_process'
 import * as fs from 'fs'
 
+import * as logger from './logger'
+
 const trustedCa = [
     '/etc/pki/tls/certs/ca-bundle.crt',
     '/etc/ssl/certs/ca-certificates.crt',
@@ -31,7 +33,7 @@ const splitCa = (chain: string, split: string = '\n') => {
 }
 
 const loadOsxCerts = () => {
-    console.log('[vault-client]: Loading certs from osx keychain')
+    logger.log('[vault-client]: Loading certs from osx keychain')
     const keyChains = [
         '/Library/Keychains/System.keychain',
         '/System/Library/Keychains/SystemRootCertificates.keychain',
@@ -40,12 +42,12 @@ const loadOsxCerts = () => {
         .map((chain) => `security find-certificate -a -p ${chain}`)
         .map((cmd) => splitCa(childProcess.execSync(cmd, { encoding: 'utf8' })))
         .reduce((prev, curr) => prev.concat(curr), [])
-    console.log('[vault-client]: Certs from osx keychain loaded')
+    logger.log('[vault-client]: Certs from osx keychain loaded')
     return caList
 }
 
 const loadLinuxCerts = () => {
-    console.log('[vault-client]: Loading system certs')
+    logger.log('[vault-client]: Loading system certs')
     const caList: Array<string> = []
     for (const caFile of trustedCa) {
         if (fs.existsSync(caFile)) {
@@ -54,7 +56,7 @@ const loadLinuxCerts = () => {
         }
     }
 
-    console.log('[vault-client]: System certs loaded')
+    logger.log('[vault-client]: System certs loaded')
     return caList
 }
 
