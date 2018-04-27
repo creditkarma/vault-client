@@ -1,6 +1,7 @@
 import { CoreOptions } from 'request'
 import { getToken } from './discovery'
 import { HVInvalidResponse } from './errors'
+import * as logger from './logger'
 import { HttpProtocol, IHVConfig, IReadResult } from './types'
 import * as utils from './utils'
 import { VaultService } from './VaultService'
@@ -36,7 +37,7 @@ export class VaultClient {
                 if (result.data && result.data.value) {
                     return result.data.value
                 } else {
-                    console.warn('Invalid response from Vault: ', result)
+                    logger.warn('Invalid response from Vault: ', result)
                     throw new HVInvalidResponse(key)
                 }
             })

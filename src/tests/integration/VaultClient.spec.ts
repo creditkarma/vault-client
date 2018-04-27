@@ -37,6 +37,12 @@ describe('VaultClient', () => {
         })
     })
 
+    after(done => {
+        fs.unlink(mockConfig.tokenPath, err => {
+            done()
+        })
+    })
+
     describe('set', () => {
         it('should write an string to hvault', done => {
             client
@@ -162,12 +168,6 @@ describe('VaultClient', () => {
                     }
                 )
                 .catch(done)
-        })
-    })
-
-    after(done => {
-        fs.unlink(mockConfig.tokenPath, err => {
-            done()
         })
     })
 })
