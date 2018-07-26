@@ -1,6 +1,6 @@
 import { CoreOptions } from 'request'
 import { getToken } from './discovery'
-import { HVInvalidResponse } from './errors'
+import { HVFail, HVInvalidResponse } from './errors'
 import * as logger from './logger'
 import { HttpProtocol, IHVConfig, IReadResult } from './types'
 import * as utils from './utils'
@@ -16,10 +16,13 @@ export interface IVaultClientArgs {
     tokenPath?: string
 }
 
+const INIT_TOKEN: string = '[init]'
+const ERROR_TOKEN: string = '[error]'
+
 export class VaultClient {
     private service: VaultService
     private config: IHVConfig
-    private token: string | undefined
+    private token: string
     private mount: string
     private namespace: string
 
@@ -28,6 +31,7 @@ export class VaultClient {
         this.mount = this.config.mount
         this.namespace = this.config.namespace
         this.service = service || new VaultService(this.config)
+        this.token = INIT_TOKEN
     }
 
     public get<T>(key: string, options: CoreOptions = {}): Promise<T> {
@@ -51,14 +55,22 @@ export class VaultClient {
         })
     }
 
-    private getToken(): Promise<string> {
-        if (this.token !== undefined) {
-            return Promise.resolve(this.token)
-        } else {
-            return getToken(this.config).then((tokenValue: string) => {
-                this.token = tokenValue
-                return tokenValue
-            })
+    private async getToken(): Promise<string> {
+        switch (this.token) {
+            case INIT_TOKEN:
+                return getToken(this.config).then((tokenValue: string) => {
+                    this.token = tokenValue
+                    return this.token
+                }, (err: any) => {
+                    this.token = ERROR_TOKEN
+                    throw new HVFail(`Unable to load token at path[${this.config.tokenPath}]`)
+                })
+
+            case ERROR_TOKEN:
+                throw new HVFail(`Unable to load token at path[${this.config.tokenPath}]`)
+
+            default:
+                return this.token
         }
     }
 }
