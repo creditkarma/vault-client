@@ -38,11 +38,16 @@ export class VaultClient {
         return this.getToken().then((tokenValue: string) => {
             const secretPath: string = utils.resolveSecretPath(this.mount, this.namespace, key)
             return this.service.read(secretPath, tokenValue, options).then((result: IReadResult) => {
-                if (result.data && result.data.value) {
-                    return result.data.value
+                if (result.data === null || result.data === undefined) {
+                    logger.error(`Invalid response from vault. Result body null.`)
+                    throw new HVInvalidResponse(key, `Result body is null.`)
+
+                } else if (result.data.value === undefined || result.data.value === null) {
+                    logger.error(`Invalid response from vault. Result value key is null.`)
+                    throw new HVInvalidResponse(key, `Result value key is null.`)
+
                 } else {
-                    logger.warn('Invalid response from Vault: ', result)
-                    throw new HVInvalidResponse(key)
+                    return result.data.value
                 }
             })
         })

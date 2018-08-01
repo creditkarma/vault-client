@@ -1,8 +1,8 @@
 import * as url from 'url'
 
 export class HVInvalidResponse extends Error {
-    constructor(key: string) {
-        super(`Data returned from Vault for key (${key}) has incorrect structure`)
+    constructor(key: string, message: string) {
+        super(`Data returned for key[${key}] is invalid. ${message}`)
     }
 }
 
