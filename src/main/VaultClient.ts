@@ -58,7 +58,9 @@ export class VaultClient {
     private async getToken(): Promise<string> {
         switch (this.token) {
             case INIT_TOKEN:
+                logger.log(`Loading token from file[${this.config.tokenPath}]`)
                 return getToken(this.config).then((tokenValue: string) => {
+                    logger.log(`Token loaded from file[${this.config.tokenPath}]`)
                     this.token = tokenValue
                     return this.token
                 }, (err: any) => {
