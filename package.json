@@ -36,20 +36,19 @@
     "url": "https://github.com/creditkarma/vault-client"
   },
   "devDependencies": {
-    "@types/code": "^4.0.3",
-    "@types/lab": "^11.1.0",
+    "@types/code": "^4.0.5",
     "@types/node": "^8.0.51",
-    "code": "^4.1.0",
-    "lab": "^14.3.1",
-    "rimraf": "^2.6.2",
-    "tslint": "^5.11.0",
+    "code": "^5.2.4",
+    "lab": "^18.0.2",
+    "rimraf": "^2.6.3",
+    "tslint": "^5.13.1",
     "typescript": "2.9.x",
-    "wait-on": "^2.1.0"
+    "wait-on": "^3.2.0"
   },
   "dependencies": {
-    "@types/request-promise-native": "^1.0.12",
-    "@types/request": "^2.47.0",
-    "request": "^2.83.0",
-    "request-promise-native": "^1.0.5"
+    "@types/request-promise-native": "^1.0.15",
+    "@types/request": "^2.48.1",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.7"
   }
 }

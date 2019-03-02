@@ -1,5 +1,6 @@
 import { CoreOptions, OptionsWithUri, RequestResponse } from 'request'
 import * as rpn from 'request-promise-native'
+import * as logger from './logger'
 
 import {
     HttpProtocol,
@@ -54,14 +55,17 @@ function fetch(options: OptionsWithUri, token?: string): Promise<any> {
                     return Promise.resolve(res.body)
 
                 case 404:
+                    logger.error(`Resource not found[${requestOptions.uri}]`)
                     return Promise.reject(new HVMissingResource(requestOptions.uri))
 
                 default:
+                    logger.error(`Vault failed with code[${res.statusCode}]`)
                     return Promise.reject(responseAsError(res))
             }
         },
         (err: any) => {
-            return err
+            logger.error(`Unable to connect[${requestOptions.uri}]`)
+            return Promise.reject(new HVFail(`Unable to connect[${requestOptions.uri}]. ${err.message}`))
         },
     )
 }
