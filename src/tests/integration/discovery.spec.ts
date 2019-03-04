@@ -24,32 +24,30 @@ describe('TokenDiscovery', () => {
         requestOptions: {}
     }
 
-    before(done => {
-        fs.writeFile(tokenFilePath, tokenValue, (err: any) => {
-            done()
+    before(async () => {
+        return new Promise((resolve, reject) => {
+            fs.writeFile(tokenFilePath, tokenValue, (err: any) => {
+                resolve()
+            })
+        })
+    })
+
+    after(async () => {
+        return new Promise((resolve, reject) => {
+            fs.unlink(tokenFilePath, err => {
+                resolve()
+            })
         })
     })
 
     describe('getToken', () => {
-        it('should retrieve the token from a specified file', done => {
-            TokenDiscovery.getToken(mockConfig)
+        it('should retrieve the token from a specified file', async () => {
+            return TokenDiscovery.getToken(mockConfig)
                 .then(
                     (val: string) => {
                         expect(val).to.equal(tokenValue)
-                        done()
-                    },
-                    (err: any) => {
-                        console.log('error: ', err)
-                        done(err)
                     }
                 )
-                .catch(done)
-        })
-    })
-
-    after(done => {
-        fs.unlink(tokenFilePath, err => {
-            done()
         })
     })
 })

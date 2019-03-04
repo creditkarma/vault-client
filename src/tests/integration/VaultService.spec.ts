@@ -25,92 +25,57 @@ describe('VaultService', () => {
     const token: string = cleanLastChar(execSync('curl localhost:8201/client-token').toString())
 
     describe('status', () => {
-        it('should read the satus as { intialized: true }', done => {
-            service
+        it('should read the satus as { intialized: true }', async () => {
+            return service
                 .status()
                 .then(
                     res => {
                         expect(res).to.equal({ initialized: true })
-                        done()
-                    },
-                    (err: any) => {
-                        console.log('error: ', err)
-                        done(err)
                     }
                 )
-                .catch(done)
         })
     })
 
     describe('sealStatus', () => {
-        it('should correctly get seal status of vault', done => {
-            service
+        it('should correctly get seal status of vault', async () => {
+            return service
                 .sealStatus()
                 .then(
                     res => {
                         expect(res.sealed).to.equal(false)
                         expect(res).to.include(['sealed', 't', 'n', 'progress', 'version'])
-                        done()
-                    },
-                    (err: any) => {
-                        console.log('error: ', err)
-                        done(err)
                     }
                 )
-                .catch(done)
         })
     })
 
     describe('write', () => {
-        it('should write a secret to hvault', done => {
-            service
-                .write('secret/mock', mockObj, token)
-                .then(
-                    (res: any) => {
-                        done()
-                    },
-                    (err: any) => {
-                        console.log('error: ', err)
-                        done(err)
-                    }
-                )
-                .catch(done)
+        it('should write a secret to hvault', async () => {
+            return service.write('secret/mock', mockObj, token)
         })
     })
 
     describe('list', () => {
-        it('should list all secret names', done => {
-            service
+        it('should list all secret names', async () => {
+            return service
                 .list(token)
                 .then(
                     (res: any) => {
                         expect(res.data.keys).to.include('mock')
-                        done()
-                    },
-                    (err: any) => {
-                        console.log('error: ', err)
-                        done(err)
                     }
                 )
-                .catch(done)
         })
     })
 
     describe('read', () => {
-        it('should read an object from hvault', done => {
-            service
+        it('should read an object from hvault', async () => {
+            return service
                 .read('secret/mock', token)
                 .then(
                     (res: any) => {
                         expect(res.data).to.equal(mockObj)
-                        done()
-                    },
-                    (err: any) => {
-                        console.log('error: ', err)
-                        done(err)
                     }
                 )
-                .catch(done)
         })
     })
 
@@ -119,9 +84,9 @@ describe('VaultService', () => {
             protocol: 'https',
         })
         const httpsService: any = new VaultService(httpsConfig)
-        it('should have multiple ca', done => {
+
+        it('should have multiple ca', () => {
             expect(httpsService.defaultOptions.ca.length).to.be.greaterThan(1)
-            done()
         })
     })
 })
