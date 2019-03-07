@@ -31,143 +31,79 @@ describe('VaultClient', () => {
     const token: string = cleanLastChar(execSync('curl localhost:8201/client-token').toString())
 
     // Client expects the token to be available in the local file system
-    before(done => {
-        fs.writeFile(mockConfig.tokenPath, token, (err: any) => {
-            done()
+    before(async () => {
+        return new Promise((resolve, reject) => {
+            fs.writeFile(mockConfig.tokenPath, token, (err: any) => {
+                resolve()
+            })
+        })
+    })
+
+    after(async () => {
+        return new Promise((resolve, reject) => {
+            fs.unlink(mockConfig.tokenPath, err => {
+                resolve()
+            })
         })
     })
 
     describe('set', () => {
-        it('should write an string to hvault', done => {
-            client
-                .set('str', mockStr)
-                .then(
-                    (res: any) => {
-                        done()
-                    },
-                    (err: any) => {
-                        console.log('error: ', err)
-                        done(err)
-                    }
-                )
-                .catch(done)
+        it('should write an string to hvault', async () => {
+            return client.set('str', mockStr)
         })
 
-        it('should write an number to hvault', done => {
-            client
-                .set('num', mockNum)
-                .then(
-                    (res: any) => {
-                        done()
-                    },
-                    (err: any) => {
-                        console.log('error: ', err)
-                        done(err)
-                    }
-                )
-                .catch(done)
+        it('should write an number to hvault', async () => {
+            return client.set('num', mockNum)
         })
 
-        it('should write an boolean to hvault', done => {
-            client
-                .set('bool', mockBool)
-                .then(
-                    (res: any) => {
-                        done()
-                    },
-                    (err: any) => {
-                        console.log('error: ', err)
-                        done(err)
-                    }
-                )
-                .catch(done)
+        it('should write an boolean to hvault', async () => {
+            return client.set('bool', mockBool)
         })
 
-        it('should write an object to hvault', done => {
-            client
-                .set('obj', mockObj)
-                .then(
-                    (res: any) => {
-                        done()
-                    },
-                    (err: any) => {
-                        console.log('error: ', err)
-                        done(err)
-                    }
-                )
-                .catch(done)
+        it('should write an object to hvault', async () => {
+            return client.set('obj', mockObj)
         })
     })
 
     describe('get', () => {
-        it('should read a string from hvault', done => {
-            client
+        it('should read a string from hvault', async () => {
+            return client
                 .get('str')
                 .then(
                     (res: any) => {
                         expect(res).to.equal(mockStr)
-                        done()
-                    },
-                    (err: any) => {
-                        console.log('error: ', err)
-                        done(err)
                     }
                 )
-                .catch(done)
         })
 
-        it('should read a number from hvault', done => {
-            client
+        it('should read a number from hvault', async () => {
+            return client
                 .get('num')
                 .then(
                     (res: any) => {
                         expect(res).to.equal(mockNum)
-                        done()
-                    },
-                    (err: any) => {
-                        console.log('error: ', err)
-                        done(err)
                     }
                 )
-                .catch(done)
         })
 
-        it('should read a boolean from hvault', done => {
-            client
+        it('should read a boolean from hvault', async () => {
+            return client
                 .get('bool')
                 .then(
                     (res: any) => {
                         expect(res).to.equal(mockBool)
-                        done()
-                    },
-                    (err: any) => {
-                        console.log('error: ', err)
-                        done(err)
                     }
                 )
-                .catch(done)
         })
 
-        it('should read an object from hvault', done => {
-            client
+        it('should read an object from hvault', async () => {
+            return client
                 .get('obj')
                 .then(
                     (res: any) => {
                         expect(res).to.equal(mockObj)
-                        done()
-                    },
-                    (err: any) => {
-                        console.log('error: ', err)
-                        done(err)
                     }
                 )
-                .catch(done)
-        })
-    })
-
-    after(done => {
-        fs.unlink(mockConfig.tokenPath, err => {
-            done()
         })
     })
 })

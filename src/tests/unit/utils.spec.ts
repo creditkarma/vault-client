@@ -10,17 +10,16 @@ const it = lab.it
 
 describe('Utils', () => {
   describe('deepMerge', () => {
-    it('should merge two objects', (done) => {
+    it('should merge two objects', async () => {
       const obj1 = { foo: 'bar' }
       const obj2 = { one: 'two' }
       const expected = { foo: 'bar', one: 'two' }
       const actual = Utils.deepMerge(obj1, obj2)
 
       expect(actual).to.equal(expected)
-      done()
     })
 
-    it('should perform a deep merge on two objects', (done) => {
+    it('should perform a deep merge on two objects', async () => {
       const obj1 = {
         foo: 'bar',
         obj: {
@@ -45,12 +44,11 @@ describe('Utils', () => {
       const actual = Utils.deepMerge(obj1, obj2)
 
       expect(actual).to.equal(expected)
-      done()
     })
   })
 
   describe('resolveConfig', () => {
-    it('should apply options to default config', (done) => {
+    it('should apply options to default config', async () => {
       const options: Partial<IHVConfig> = {
         destination: 'localhost:8000',
         namespace: 'path',
@@ -76,12 +74,11 @@ describe('Utils', () => {
       const actual = Utils.resolveConfig(options)
 
       expect(actual).to.equal(expected)
-      done()
     })
   })
 
   describe('resolveSecretPath', () => {
-    it('should correctly join a secret path', (done) => {
+    it('should correctly join a secret path', async () => {
       const mount: string = 'secret'
       const namespace: string = 'what'
       const secret: string = 'key'
@@ -89,10 +86,9 @@ describe('Utils', () => {
       const expected: string = 'secret/what/key'
 
       expect(actual).to.equal(expected)
-      done()
     })
 
-    it('should correctly handle extra slashes', (done) => {
+    it('should correctly handle extra slashes', async () => {
       const mount: string = 'secret/'
       const namespace: string = '/what/'
       const secret: string = '/key'
@@ -100,10 +96,9 @@ describe('Utils', () => {
       const expected: string = 'secret/what/key'
 
       expect(actual).to.equal(expected)
-      done()
     })
 
-    it('should remove leading slash', (done) => {
+    it('should remove leading slash', async () => {
       const mount: string = '/secret/'
       const namespace: string = '/what/'
       const secret: string = '/key'
@@ -111,10 +106,9 @@ describe('Utils', () => {
       const expected: string = 'secret/what/key'
 
       expect(actual).to.equal(expected)
-      done()
     })
 
-    it('should remove trailing slash', (done) => {
+    it('should remove trailing slash', () => {
       const mount: string = '/secret/'
       const namespace: string = '/what/'
       const secret: string = '/key/'
@@ -122,7 +116,6 @@ describe('Utils', () => {
       const expected: string = 'secret/what/key'
 
       expect(actual).to.equal(expected)
-      done()
     })
   })
 })

@@ -9,28 +9,25 @@ const it = lab.it
 
 describe('TokenDiscovery', () => {
   describe('cleanLastChar', () => {
-    it('should remove trailing \\n character from string', (done) => {
+    it('should remove trailing \\n character from string', async () => {
       const test: string = 'This is a test\n'
       const actual: string = TokenDiscovery.cleanLastChar(test)
       const expected: string = 'This is a test'
       expect(actual).to.equal(expected)
-      done()
     })
 
-    it('should remove trailing \\r character from string', (done) => {
+    it('should remove trailing \\r character from string', async () => {
       const test: string = 'This is a test\r'
       const actual: string = TokenDiscovery.cleanLastChar(test)
       const expected: string = 'This is a test'
       expect(actual).to.equal(expected)
-      done()
     })
 
-    it('should return a string without trailing newline unaltered', (done) => {
+    it('should return a string without trailing newline unaltered', async () => {
       const test: string = 'This is a test'
       const actual: string = TokenDiscovery.cleanLastChar(test)
       const expected: string = 'This is a test'
       expect(actual).to.equal(expected)
-      done()
     })
   })
 })
