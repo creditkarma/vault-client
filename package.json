@@ -27,7 +27,9 @@
     "release:patch": "npm version patch && npm run release:publish",
     "release:minor": "npm version minor && npm run release:publish",
     "release:major": "npm version major && npm run release:publish",
-    "release:publish": "git push --follow-tags"
+    "release:publish": "git push --follow-tags",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "author": "Credit Karma",
   "license": "Apache-2.0",
@@ -49,6 +51,8 @@
     "@types/request-promise-native": "^1.0.15",
     "@types/request": "^2.48.1",
     "request": "^2.88.0",
-    "request-promise-native": "^1.0.7"
-  }
+    "request-promise-native": "^1.0.7",
+    "snyk": "^1.189.0"
+  },
+  "snyk": true
 }
