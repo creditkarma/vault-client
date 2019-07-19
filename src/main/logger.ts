@@ -1,8 +1,5 @@
 function isDebug(): boolean {
-    return (
-        process.env.VAULT_DEBUG === 'true' ||
-        process.env.DEBUG === 'true'
-    )
+    return process.env.VAULT_DEBUG === 'true' || process.env.DEBUG === 'true'
 }
 
 export const log = (msg: string, data?: any) => {

@@ -56,7 +56,9 @@ function fetch(options: OptionsWithUri, token?: string): Promise<any> {
 
                 case 404:
                     logger.error(`Resource not found[${requestOptions.uri}]`)
-                    return Promise.reject(new HVMissingResource(requestOptions.uri))
+                    return Promise.reject(
+                        new HVMissingResource(requestOptions.uri),
+                    )
 
                 default:
                     logger.error(`Vault failed with code[${res.statusCode}]`)
@@ -65,7 +67,11 @@ function fetch(options: OptionsWithUri, token?: string): Promise<any> {
         },
         (err: any) => {
             logger.error(`Unable to connect[${requestOptions.uri}]`)
-            return Promise.reject(new HVFail(`Unable to connect[${requestOptions.uri}]. ${err.message}`))
+            return Promise.reject(
+                new HVFail(
+                    `Unable to connect[${requestOptions.uri}]. ${err.message}`,
+                ),
+            )
         },
     )
 }
@@ -89,9 +95,12 @@ export class VaultService {
     }: IVaultServiceArgs) {
         this.defaultOptions = requestOptions
         if (protocol === 'https') {
-            this.defaultOptions = utils.deepMerge({
-                ca: loadSystemCerts(),
-            }, this.defaultOptions)
+            this.defaultOptions = utils.deepMerge(
+                {
+                    ca: loadSystemCerts(),
+                },
+                this.defaultOptions,
+            )
         }
         this.dest = `${protocol}://${destination}/${apiVersion}`
     }
@@ -105,7 +114,10 @@ export class VaultService {
         )
     }
 
-    public init(data: IInitArgs, options: CoreOptions = {}): Promise<IInitResult> {
+    public init(
+        data: IInitArgs,
+        options: CoreOptions = {},
+    ): Promise<IInitResult> {
         return fetch(
             utils.deepMerge(this.defaultOptions, options, {
                 uri: `${this.dest}/sys/init`,
@@ -134,7 +146,10 @@ export class VaultService {
         )
     }
 
-    public unseal(data: IUnsealArgs, options: CoreOptions = {}): Promise<IUnsealResult> {
+    public unseal(
+        data: IUnsealArgs,
+        options: CoreOptions = {},
+    ): Promise<IUnsealResult> {
         return fetch(
             utils.deepMerge(this.defaultOptions, options, {
                 uri: `${this.dest}/sys/unseal`,
@@ -144,7 +159,11 @@ export class VaultService {
         )
     }
 
-    public read(path: string, token: string, options: CoreOptions = {}): Promise<IReadResult> {
+    public read(
+        path: string,
+        token: string,
+        options: CoreOptions = {},
+    ): Promise<IReadResult> {
         return fetch(
             utils.deepMerge(this.defaultOptions, options, {
                 uri: `${this.dest}/${path}`,
@@ -154,7 +173,10 @@ export class VaultService {
         )
     }
 
-    public list(token: string, options: CoreOptions = {}): Promise<IListResult> {
+    public list(
+        token: string,
+        options: CoreOptions = {},
+    ): Promise<IListResult> {
         return fetch(
             utils.deepMerge(this.defaultOptions, options, {
                 uri: `${this.dest}/secret?list=true`,
@@ -164,7 +186,12 @@ export class VaultService {
         )
     }
 
-    public write(path: string, data: any, token: string, options: CoreOptions = {}): Promise<void> {
+    public write(
+        path: string,
+        data: any,
+        token: string,
+        options: CoreOptions = {},
+    ): Promise<void> {
         return fetch(
             utils.deepMerge(this.defaultOptions, options, {
                 uri: `${this.dest}/${path}`,

@@ -36,26 +36,48 @@ export class VaultClient {
 
     public get<T>(key: string, options: CoreOptions = {}): Promise<T> {
         return this.getToken().then((tokenValue: string) => {
-            const secretPath: string = utils.resolveSecretPath(this.mount, this.namespace, key)
-            return this.service.read(secretPath, tokenValue, options).then((result: IReadResult) => {
-                if (result.data === null || result.data === undefined) {
-                    logger.error(`Invalid response from vault. Result body null.`)
-                    throw new HVInvalidResponse(key, `Result body is null.`)
-
-                } else if (result.data.value === undefined || result.data.value === null) {
-                    logger.error(`Invalid response from vault. Result value key is null.`)
-                    throw new HVInvalidResponse(key, `Result value key is null.`)
-
-                } else {
-                    return result.data.value
-                }
-            })
+            const secretPath: string = utils.resolveSecretPath(
+                this.mount,
+                this.namespace,
+                key,
+            )
+            return this.service
+                .read(secretPath, tokenValue, options)
+                .then((result: IReadResult) => {
+                    if (result.data === null || result.data === undefined) {
+                        logger.error(
+                            `Invalid response from vault. Result body null.`,
+                        )
+                        throw new HVInvalidResponse(key, `Result body is null.`)
+                    } else if (
+                        result.data.value === undefined ||
+                        result.data.value === null
+                    ) {
+                        logger.error(
+                            `Invalid response from vault. Result value key is null.`,
+                        )
+                        throw new HVInvalidResponse(
+                            key,
+                            `Result value key is null.`,
+                        )
+                    } else {
+                        return result.data.value
+                    }
+                })
         })
     }
 
-    public set<T>(key: string, value: T, options: CoreOptions = {}): Promise<void> {
+    public set<T>(
+        key: string,
+        value: T,
+        options: CoreOptions = {},
+    ): Promise<void> {
         return this.getToken().then((tokenValue: string) => {
-            const secret: string = utils.resolveSecretPath(this.mount, this.namespace, key)
+            const secret: string = utils.resolveSecretPath(
+                this.mount,
+                this.namespace,
+                key,
+            )
             return this.service.write(secret, { value }, tokenValue, options)
         })
     }
@@ -64,17 +86,26 @@ export class VaultClient {
         switch (this.token) {
             case INIT_TOKEN:
                 logger.log(`Loading token from file[${this.config.tokenPath}]`)
-                return getToken(this.config).then((tokenValue: string) => {
-                    logger.log(`Token loaded from file[${this.config.tokenPath}]`)
-                    this.token = tokenValue
-                    return this.token
-                }, (err: any) => {
-                    this.token = ERROR_TOKEN
-                    throw new HVFail(`Unable to load token at path[${this.config.tokenPath}]`)
-                })
+                return getToken(this.config).then(
+                    (tokenValue: string) => {
+                        logger.log(
+                            `Token loaded from file[${this.config.tokenPath}]`,
+                        )
+                        this.token = tokenValue
+                        return this.token
+                    },
+                    (err: any) => {
+                        this.token = ERROR_TOKEN
+                        throw new HVFail(
+                            `Unable to load token at path[${this.config.tokenPath}]`,
+                        )
+                    },
+                )
 
             case ERROR_TOKEN:
-                throw new HVFail(`Unable to load token at path[${this.config.tokenPath}]`)
+                throw new HVFail(
+                    `Unable to load token at path[${this.config.tokenPath}]`,
+                )
 
             default:
                 return this.token

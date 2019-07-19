@@ -1,5 +1,5 @@
-import { expect } from 'code'
-import * as Lab from 'lab'
+import { expect } from '@hapi/code'
+import * as Lab from '@hapi/lab'
 import * as fs from 'fs'
 import { execSync } from 'child_process'
 import { VaultClient } from '../../main/VaultClient'
@@ -21,14 +21,16 @@ describe('VaultClient', () => {
         mount: 'secret',
         namespace: '',
         tokenPath: '/tmp/token',
-        requestOptions: {}
+        requestOptions: {},
     }
     const client: VaultClient = new VaultClient(mockConfig)
     const mockStr = 'test'
     const mockNum = 5
     const mockBool = true
     const mockObj = { value: 'bar' }
-    const token: string = cleanLastChar(execSync('curl localhost:8201/client-token').toString())
+    const token: string = cleanLastChar(
+        execSync('curl localhost:8201/client-token').toString(),
+    )
 
     // Client expects the token to be available in the local file system
     before(async () => {
@@ -41,7 +43,7 @@ describe('VaultClient', () => {
 
     after(async () => {
         return new Promise((resolve, reject) => {
-            fs.unlink(mockConfig.tokenPath, err => {
+            fs.unlink(mockConfig.tokenPath, (err) => {
                 resolve()
             })
         })
@@ -67,43 +69,27 @@ describe('VaultClient', () => {
 
     describe('get', () => {
         it('should read a string from hvault', async () => {
-            return client
-                .get('str')
-                .then(
-                    (res: any) => {
-                        expect(res).to.equal(mockStr)
-                    }
-                )
+            return client.get('str').then((res: any) => {
+                expect(res).to.equal(mockStr)
+            })
         })
 
         it('should read a number from hvault', async () => {
-            return client
-                .get('num')
-                .then(
-                    (res: any) => {
-                        expect(res).to.equal(mockNum)
-                    }
-                )
+            return client.get('num').then((res: any) => {
+                expect(res).to.equal(mockNum)
+            })
         })
 
         it('should read a boolean from hvault', async () => {
-            return client
-                .get('bool')
-                .then(
-                    (res: any) => {
-                        expect(res).to.equal(mockBool)
-                    }
-                )
+            return client.get('bool').then((res: any) => {
+                expect(res).to.equal(mockBool)
+            })
         })
 
         it('should read an object from hvault', async () => {
-            return client
-                .get('obj')
-                .then(
-                    (res: any) => {
-                        expect(res).to.equal(mockObj)
-                    }
-                )
+            return client.get('obj').then((res: any) => {
+                expect(res).to.equal(mockObj)
+            })
         })
     })
 })

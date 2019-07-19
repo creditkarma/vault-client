@@ -1,5 +1,5 @@
-import { expect } from 'code'
-import * as Lab from 'lab'
+import { expect } from '@hapi/code'
+import * as Lab from '@hapi/lab'
 import * as fs from 'fs'
 import * as TokenDiscovery from '../../main/discovery'
 import { IHVConfig } from '../../main/types'
@@ -21,7 +21,7 @@ describe('TokenDiscovery', () => {
         destination: '',
         namespace: '',
         tokenPath: tokenFilePath,
-        requestOptions: {}
+        requestOptions: {},
     }
 
     before(async () => {
@@ -34,7 +34,7 @@ describe('TokenDiscovery', () => {
 
     after(async () => {
         return new Promise((resolve, reject) => {
-            fs.unlink(tokenFilePath, err => {
+            fs.unlink(tokenFilePath, (err) => {
                 resolve()
             })
         })
@@ -42,12 +42,9 @@ describe('TokenDiscovery', () => {
 
     describe('getToken', () => {
         it('should retrieve the token from a specified file', async () => {
-            return TokenDiscovery.getToken(mockConfig)
-                .then(
-                    (val: string) => {
-                        expect(val).to.equal(tokenValue)
-                    }
-                )
+            return TokenDiscovery.getToken(mockConfig).then((val: string) => {
+                expect(val).to.equal(tokenValue)
+            })
         })
     })
 })

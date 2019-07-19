@@ -12,8 +12,13 @@ const trustedCa = [
 const splitCa = (chain: string, split: string = '\n') => {
     const ca: Array<string> = []
 
-    if (chain.indexOf('-END CERTIFICATE-') < 0 || chain.indexOf('-BEGIN CERTIFICATE-') < 0) {
-        throw new Error("File does not contain 'BEGIN CERTIFICATE' or 'END CERTIFICATE'")
+    if (
+        chain.indexOf('-END CERTIFICATE-') < 0 ||
+        chain.indexOf('-BEGIN CERTIFICATE-') < 0
+    ) {
+        throw new Error(
+            "File does not contain 'BEGIN CERTIFICATE' or 'END CERTIFICATE'",
+        )
     }
 
     const chainArray = chain.split(split)
@@ -51,7 +56,7 @@ const loadLinuxCerts = () => {
     const caList: Array<string> = []
     for (const caFile of trustedCa) {
         if (fs.existsSync(caFile)) {
-            const caInfo = fs.readFileSync(caFile, { encoding: 'utf8'} )
+            const caInfo = fs.readFileSync(caFile, { encoding: 'utf8' })
             caList.push(...splitCa(caInfo))
         }
     }
@@ -64,7 +69,6 @@ export const loadSystemCerts = (): Array<string> => {
     // if OSX, load certs from key chains
     if (process.platform === 'darwin') {
         return loadOsxCerts()
-
     } else {
         return loadLinuxCerts()
     }

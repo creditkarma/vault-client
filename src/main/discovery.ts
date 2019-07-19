@@ -3,7 +3,7 @@ import * as path from 'path'
 import * as logger from './logger'
 import { IHVConfig } from './types'
 
-const BAD_CHARS: Array<string> = [ '\n', '\r' ]
+const BAD_CHARS: Array<string> = ['\n', '\r']
 
 export function getToken(config: IHVConfig): Promise<string> {
     return new Promise((resolve, reject) => {
