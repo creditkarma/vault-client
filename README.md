@@ -34,7 +34,7 @@ Available options:
 
 The mount is the underlying Vault path at which secrets are stored. By default this is `secret`. So all of your secrets would be stored at an address like: `http://localhost:8200/secret/<key>`. This can be configured differently per Vault instance.
 
-The namespace is an addition on this path to organize your secrets. Your service may share a Vault instance with other services. The namespace could then be your service name. All your secrets would be stored at: `http://localhost;8200/secret/<namespace>/<key>`.
+The namespace is an addition on this path to organize your secrets. Your service may share a Vault instance with other services. The namespace could then be your service name. All your secrets would be stored at: `http://localhost:8200/secret/<namespace>/<key>`.
 
 #### Data Formatting
 
