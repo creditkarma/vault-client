@@ -92,4 +92,12 @@ describe('VaultClient', () => {
             })
         })
     })
+
+    describe('health', () => {
+        it('should respond health check', async () => {
+            return client.health().then((res: any) => {
+                expect(res).to.equal(true)
+            })
+        })
+    })
 })

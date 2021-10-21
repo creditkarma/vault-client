@@ -26,6 +26,16 @@ describe('VaultService', () => {
         execSync('curl localhost:8201/client-token').toString(),
     )
 
+    describe('heealth', () => {
+        it('should read the health status', async () => {
+            return service.health(token).then((res) => {
+                expect(res.initialized).to.be.equal(true)
+                expect(res.sealed).to.be.equal(false)
+                expect(res.standby).to.be.equal(false)
+            })
+        })
+    })
+
     describe('status', () => {
         it('should read the satus as { intialized: true }', async () => {
             return service.status().then((res) => {
