@@ -4,6 +4,7 @@ import * as logger from './logger'
 
 import {
     HttpProtocol,
+    IHealthStatusResult,
     IInitArgs,
     IInitResult,
     IListResult,
@@ -103,6 +104,19 @@ export class VaultService {
             )
         }
         this.dest = `${protocol}://${destination}/${apiVersion}`
+    }
+
+    public health(
+        token: string,
+        options: CoreOptions = {},
+    ): Promise<IHealthStatusResult> {
+        return fetch(
+            utils.deepMerge(this.defaultOptions, options, {
+                uri: `${this.dest}/sys/health`,
+                method: 'GET',
+            }),
+            token,
+        )
     }
 
     public status(options: CoreOptions = {}): Promise<IStatusResult> {

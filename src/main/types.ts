@@ -78,3 +78,16 @@ export interface IReadResult {
     warnings: any
     auth: any
 }
+
+export interface IHealthStatusResult {
+    initialized: boolean
+    sealed: boolean
+    standby: boolean
+    server_time_utc: number
+    version: string
+    cluster_name: string
+    cluster_id: string
+    performance_standby?: boolean
+    replication_perf_mode?: 'disabled' | 'enabled'
+    replication_dr_mode?: 'disabled' | 'enabled'
+}

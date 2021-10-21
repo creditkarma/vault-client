@@ -2,7 +2,12 @@ import { CoreOptions } from 'request'
 import { getToken } from './discovery'
 import { HVFail, HVInvalidResponse } from './errors'
 import * as logger from './logger'
-import { HttpProtocol, IHVConfig, IReadResult } from './types'
+import {
+    HttpProtocol,
+    IHealthStatusResult,
+    IHVConfig,
+    IReadResult,
+} from './types'
 import * as utils from './utils'
 import { VaultService } from './VaultService'
 
@@ -32,6 +37,22 @@ export class VaultClient {
         this.namespace = this.config.namespace
         this.service = service || new VaultService(this.config)
         this.token = INIT_TOKEN
+    }
+
+    public health(): Promise<boolean> {
+        return this.getToken().then((tokenValue: string) => {
+            return this.service
+                .health(tokenValue)
+                .then((result: IHealthStatusResult) => {
+                    return true
+                })
+                .catch((err) => {
+                    logger.error(
+                        `Failed healthcheck from vault. Error ${err.message}`,
+                    )
+                    return false
+                })
+        })
     }
 
     public get<T>(key: string, options: CoreOptions = {}): Promise<T> {
