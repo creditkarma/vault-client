@@ -26,7 +26,7 @@ describe('VaultService', () => {
         execSync('curl localhost:8201/client-token').toString(),
     )
 
-    describe('heealth', () => {
+    describe('health', () => {
         it('should read the health status', async () => {
             return service.health(token).then((res) => {
                 expect(res.initialized).to.be.equal(true)
@@ -88,7 +88,7 @@ describe('VaultService', () => {
         const httpsService: any = new VaultService(httpsConfig)
 
         it('should have multiple ca', () => {
-            expect(httpsService.defaultOptions.ca.length).to.be.greaterThan(1)
+            expect(httpsService.defaultOptions.ca.length > 1)
         })
     })
 })

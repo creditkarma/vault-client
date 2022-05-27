@@ -1,5 +1,7 @@
-import { CoreOptions, OptionsWithUri, RequestResponse } from 'request'
-import * as rpn from 'request-promise-native'
+import { Response, OptionsOfJSONResponseBody } from 'got'
+
+import got from 'got'
+
 import * as logger from './logger'
 
 import {
@@ -21,16 +23,11 @@ import * as utils from './utils'
 
 import { loadSystemCerts } from './certs'
 
-const request = rpn.defaults({
-    json: true,
-    resolveWithFullResponse: true,
-    simple: false,
-})
-
-function responseAsError(res: RequestResponse): HVFail {
+function responseAsError(res: Response): HVFail {
     let message: string
-    if (res.body && res.body.errors && res.body.errors.length > 0) {
-        message = res.body.errors[0]
+    const responseBody = res.body as any
+    if (responseBody && responseBody.errors && responseBody.errors.length > 0) {
+        message = responseBody.errors[0]
     } else {
         message = `Status ${res.statusCode}`
     }
@@ -38,8 +35,11 @@ function responseAsError(res: RequestResponse): HVFail {
     return new HVFail(message)
 }
 
-function fetch(options: OptionsWithUri, token?: string): Promise<any> {
-    const requestOptions: OptionsWithUri =
+function fetch(
+    options: OptionsOfJSONResponseBody,
+    token?: string,
+): Promise<any> {
+    const requestOptions: OptionsOfJSONResponseBody =
         token !== undefined
             ? utils.deepMerge(options, {
                   headers: {
@@ -48,17 +48,17 @@ function fetch(options: OptionsWithUri, token?: string): Promise<any> {
               })
             : options
 
-    return request(requestOptions).then(
-        (res: RequestResponse) => {
+    return got(requestOptions).then(
+        (res: Response) => {
             switch (res.statusCode) {
                 case 200:
                 case 204:
                     return Promise.resolve(res.body)
 
                 case 404:
-                    logger.error(`Resource not found[${requestOptions.uri}]`)
+                    logger.error(`Resource not found[${requestOptions.url}]`)
                     return Promise.reject(
-                        new HVMissingResource(requestOptions.uri),
+                        new HVMissingResource(requestOptions.url as string),
                     )
 
                 default:
@@ -67,10 +67,10 @@ function fetch(options: OptionsWithUri, token?: string): Promise<any> {
             }
         },
         (err: any) => {
-            logger.error(`Unable to connect[${requestOptions.uri}]`)
+            logger.error(`Unable to connect[${requestOptions.url}]`)
             return Promise.reject(
                 new HVFail(
-                    `Unable to connect[${requestOptions.uri}]. ${err.message}`,
+                    `Unable to connect[${requestOptions.url}]. ${err.message}`,
                 ),
             )
         },
@@ -81,11 +81,11 @@ export interface IVaultServiceArgs {
     destination: string
     protocol?: HttpProtocol
     apiVersion?: 'v1'
-    requestOptions?: CoreOptions
+    requestOptions?: OptionsOfJSONResponseBody
 }
 
 export class VaultService {
-    private defaultOptions: CoreOptions
+    private defaultOptions: OptionsOfJSONResponseBody
     private dest: string
 
     constructor({
@@ -108,21 +108,27 @@ export class VaultService {
 
     public health(
         token: string,
-        options: CoreOptions = {},
+        options: OptionsOfJSONResponseBody = {
+            responseType: 'json',
+        },
     ): Promise<IHealthStatusResult> {
         return fetch(
             utils.deepMerge(this.defaultOptions, options, {
-                uri: `${this.dest}/sys/health`,
+                url: `${this.dest}/sys/health`,
                 method: 'GET',
             }),
             token,
         )
     }
 
-    public status(options: CoreOptions = {}): Promise<IStatusResult> {
+    public status(
+        options: OptionsOfJSONResponseBody = {
+            responseType: 'json',
+        },
+    ): Promise<IStatusResult> {
         return fetch(
             utils.deepMerge(this.defaultOptions, options, {
-                uri: `${this.dest}/sys/init`,
+                url: `${this.dest}/sys/init`,
                 method: 'GET',
             }),
         )
@@ -130,30 +136,41 @@ export class VaultService {
 
     public init(
         data: IInitArgs,
-        options: CoreOptions = {},
+        options: OptionsOfJSONResponseBody = {
+            responseType: 'json',
+        },
     ): Promise<IInitResult> {
         return fetch(
             utils.deepMerge(this.defaultOptions, options, {
-                uri: `${this.dest}/sys/init`,
+                url: `${this.dest}/sys/init`,
                 json: data,
                 method: 'PUT',
             }),
         )
     }
 
-    public sealStatus(options: CoreOptions = {}): Promise<ISealStatusResult> {
+    public sealStatus(
+        options: OptionsOfJSONResponseBody = {
+            responseType: 'json',
+        },
+    ): Promise<ISealStatusResult> {
         return fetch(
             utils.deepMerge(this.defaultOptions, options, {
-                uri: `${this.dest}/sys/seal-status`,
+                url: `${this.dest}/sys/seal-status`,
                 method: 'GET',
             }),
         )
     }
 
-    public seal(token: string, options: CoreOptions = {}): Promise<void> {
+    public seal(
+        token: string,
+        options: OptionsOfJSONResponseBody = {
+            responseType: 'json',
+        },
+    ): Promise<void> {
         return fetch(
             utils.deepMerge(this.defaultOptions, options, {
-                uri: `${this.dest}/sys/seal`,
+                url: `${this.dest}/sys/seal`,
                 method: 'PUT',
             }),
             token,
@@ -162,11 +179,13 @@ export class VaultService {
 
     public unseal(
         data: IUnsealArgs,
-        options: CoreOptions = {},
+        options: OptionsOfJSONResponseBody = {
+            responseType: 'json',
+        },
     ): Promise<IUnsealResult> {
         return fetch(
             utils.deepMerge(this.defaultOptions, options, {
-                uri: `${this.dest}/sys/unseal`,
+                url: `${this.dest}/sys/unseal`,
                 json: data,
                 method: 'PUT',
             }),
@@ -176,11 +195,13 @@ export class VaultService {
     public read(
         path: string,
         token: string,
-        options: CoreOptions = {},
+        options: OptionsOfJSONResponseBody = {
+            responseType: 'json',
+        },
     ): Promise<IReadResult> {
         return fetch(
             utils.deepMerge(this.defaultOptions, options, {
-                uri: `${this.dest}/${path}`,
+                url: `${this.dest}/${path}`,
                 method: 'GET',
             }),
             token,
@@ -189,11 +210,13 @@ export class VaultService {
 
     public list(
         token: string,
-        options: CoreOptions = {},
+        options: OptionsOfJSONResponseBody = {
+            responseType: 'json',
+        },
     ): Promise<IListResult> {
         return fetch(
             utils.deepMerge(this.defaultOptions, options, {
-                uri: `${this.dest}/secret?list=true`,
+                url: `${this.dest}/secret?list=true`,
                 method: 'GET',
             }),
             token,
@@ -204,11 +227,13 @@ export class VaultService {
         path: string,
         data: any,
         token: string,
-        options: CoreOptions = {},
+        options: OptionsOfJSONResponseBody = {
+            responseType: 'json',
+        },
     ): Promise<void> {
         return fetch(
             utils.deepMerge(this.defaultOptions, options, {
-                uri: `${this.dest}/${path}`,
+                url: `${this.dest}/${path}`,
                 json: data,
                 method: 'POST',
             }),

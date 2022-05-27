@@ -34,7 +34,7 @@ describe('VaultClient', () => {
 
     // Client expects the token to be available in the local file system
     before(async () => {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
             fs.writeFile(mockConfig.tokenPath, token, (err: any) => {
                 resolve()
             })
@@ -42,7 +42,7 @@ describe('VaultClient', () => {
     })
 
     after(async () => {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
             fs.unlink(mockConfig.tokenPath, (err) => {
                 resolve()
             })

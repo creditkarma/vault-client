@@ -23,8 +23,8 @@
         "pretest": "npm run build && npm run docker",
         "posttest": "npm run docker:kill",
         "test": "wait-on --timeout 20000 http://localhost:8201 && npm run lint && npm run test:unit && npm run test:integration",
-        "test:unit": "lab --timeout 10000 --verbose -l -S ./dist/tests/unit/*.spec.js",
-        "test:integration": "lab --timeout 15000 --verbose -l -S ./dist/tests/integration/*.spec.js",
+        "test:unit": "lab --typescript --timeout 10000 --verbose -l -S ./src/tests/unit/*.spec.ts",
+        "test:integration": "lab  --typescript --timeout 15000 --verbose -l -S ./src/tests/integration/*.spec.ts",
         "release:patch": "npm version patch && npm run release:publish",
         "release:minor": "npm version minor && npm run release:publish",
         "release:major": "npm version major && npm run release:publish",
@@ -37,27 +37,25 @@
         "url": "https://github.com/creditkarma/vault-client"
     },
     "devDependencies": {
-        "@hapi/code": "^5.3.0",
-        "@hapi/lab": "^19.1.0",
-        "@types/hapi__code": "^5.3.0",
-        "@types/node": "^8.0.51",
-        "@typescript-eslint/eslint-plugin": "^1.12.0",
-        "@typescript-eslint/parser": "^1.12.0",
-        "eslint": "^6.0.1",
-        "eslint-config-prettier": "^6.0.0",
-        "eslint-plugin-prettier": "^3.1.0",
+        "@hapi/code": "^8.0.1",
+        "@hapi/lab": "^25.0.1",
+        "@types/hapi__code": "^8.0.1",
+        "@types/node": "^16.11.34",
+        "@typescript-eslint/eslint-plugin": "^5.15.0",
+        "@typescript-eslint/parser": "^5.15.0",
+        "eslint": "^8.15.1",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-plugin-prettier": "^4.0.0",
         "prettier": "^1.18.2",
         "rimraf": "^2.6.3",
         "tslint": "^5.13.1",
-        "typescript": "3.5.x",
+        "typescript": "4.6.x",
         "wait-on": "^3.2.0"
     },
     "dependencies": {
+        "@types/got": "^9.6.12",
         "@types/lodash": "^4.14.136",
-        "@types/request": "^2.48.1",
-        "@types/request-promise-native": "^1.0.15",
-        "lodash": "^4.17.15",
-        "request": "^2.88.0",
-        "request-promise-native": "^1.0.7"
+        "got": "^11.8.3",
+        "lodash": "^4.17.15"
     }
 }

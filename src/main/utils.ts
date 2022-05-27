@@ -1,5 +1,5 @@
 import * as path from 'path'
-import merge = require('lodash/merge')
+import { merge } from 'lodash'
 
 import { IHVConfig } from './types'
 
