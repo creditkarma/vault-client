@@ -88,7 +88,7 @@ describe('VaultService', () => {
         const httpsService: any = new VaultService(httpsConfig)
 
         it('should have multiple ca', () => {
-            expect(httpsService.defaultOptions.ca.length > 1)
+            expect(httpsService.defaultOptions.https.certificateAuthority.length > 1)
         })
     })
 })
