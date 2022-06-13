@@ -26,7 +26,7 @@ import { loadSystemCerts } from './certs'
 function responseAsError(res: Response): HVFail {
     let message: string
     const responseBody = res.body as any
-    if (responseBody && responseBody.errors && responseBody.errors.length > 0) {
+    if (responseBody?.errors?.length > 0) {
         message = responseBody.errors[0]
     } else {
         message = `Status ${res.statusCode}`

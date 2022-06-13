@@ -10,20 +10,10 @@ module.exports = {
         sourceType: 'module', // Allows for the use of imports
     },
     rules: {
+        '@typescript-eslint/array-type': ['error', { default: 'generic'}],
         '@typescript-eslint/no-unused-vars': 0,
         '@typescript-eslint/no-explicit-any': 0,
         '@typescript-eslint/explicit-function-return-type': 0,
-        '@typescript-eslint/naming-convention': [
-            'error',
-            {
-                selector: 'interface',
-                format: ['PascalCase'],
-                custom: {
-                    regex: '^I[A-Z]',
-                    match: true,
-                },
-            },
-        ],
         '@typescript-eslint/camelcase': 0,
         '@typescript-eslint/no-non-null-assertion': 0,
         '@typescript-eslint/no-var-requires': 0,
