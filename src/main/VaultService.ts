@@ -94,11 +94,16 @@ export class VaultService {
         apiVersion = 'v1',
         requestOptions = {},
     }: IVaultServiceArgs) {
-        this.defaultOptions = requestOptions
+        this.defaultOptions = {
+            responseType: 'json',
+            ...requestOptions,
+        }
         if (protocol === 'https') {
             this.defaultOptions = utils.deepMerge(
                 {
-                    ca: loadSystemCerts(),
+                    https: {
+                        certificateAuthority: loadSystemCerts(),
+                    },
                 },
                 this.defaultOptions,
             )
@@ -108,9 +113,7 @@ export class VaultService {
 
     public health(
         token: string,
-        options: OptionsOfJSONResponseBody = {
-            responseType: 'json',
-        },
+        options: OptionsOfJSONResponseBody = {},
     ): Promise<IHealthStatusResult> {
         return fetch(
             utils.deepMerge(this.defaultOptions, options, {
@@ -122,9 +125,7 @@ export class VaultService {
     }
 
     public status(
-        options: OptionsOfJSONResponseBody = {
-            responseType: 'json',
-        },
+        options: OptionsOfJSONResponseBody = {},
     ): Promise<IStatusResult> {
         return fetch(
             utils.deepMerge(this.defaultOptions, options, {
@@ -136,9 +137,7 @@ export class VaultService {
 
     public init(
         data: IInitArgs,
-        options: OptionsOfJSONResponseBody = {
-            responseType: 'json',
-        },
+        options: OptionsOfJSONResponseBody = {},
     ): Promise<IInitResult> {
         return fetch(
             utils.deepMerge(this.defaultOptions, options, {
@@ -150,9 +149,7 @@ export class VaultService {
     }
 
     public sealStatus(
-        options: OptionsOfJSONResponseBody = {
-            responseType: 'json',
-        },
+        options: OptionsOfJSONResponseBody = {},
     ): Promise<ISealStatusResult> {
         return fetch(
             utils.deepMerge(this.defaultOptions, options, {
@@ -164,9 +161,7 @@ export class VaultService {
 
     public seal(
         token: string,
-        options: OptionsOfJSONResponseBody = {
-            responseType: 'json',
-        },
+        options: OptionsOfJSONResponseBody = {},
     ): Promise<void> {
         return fetch(
             utils.deepMerge(this.defaultOptions, options, {
@@ -179,9 +174,7 @@ export class VaultService {
 
     public unseal(
         data: IUnsealArgs,
-        options: OptionsOfJSONResponseBody = {
-            responseType: 'json',
-        },
+        options: OptionsOfJSONResponseBody = {},
     ): Promise<IUnsealResult> {
         return fetch(
             utils.deepMerge(this.defaultOptions, options, {
@@ -195,9 +188,7 @@ export class VaultService {
     public read(
         path: string,
         token: string,
-        options: OptionsOfJSONResponseBody = {
-            responseType: 'json',
-        },
+        options: OptionsOfJSONResponseBody = {},
     ): Promise<IReadResult> {
         return fetch(
             utils.deepMerge(this.defaultOptions, options, {
@@ -210,9 +201,7 @@ export class VaultService {
 
     public list(
         token: string,
-        options: OptionsOfJSONResponseBody = {
-            responseType: 'json',
-        },
+        options: OptionsOfJSONResponseBody = {},
     ): Promise<IListResult> {
         return fetch(
             utils.deepMerge(this.defaultOptions, options, {
@@ -227,9 +216,7 @@ export class VaultService {
         path: string,
         data: any,
         token: string,
-        options: OptionsOfJSONResponseBody = {
-            responseType: 'json',
-        },
+        options: OptionsOfJSONResponseBody = {},
     ): Promise<void> {
         return fetch(
             utils.deepMerge(this.defaultOptions, options, {

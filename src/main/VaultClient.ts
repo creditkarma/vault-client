@@ -58,9 +58,7 @@ export class VaultClient {
 
     public get<T>(
         key: string,
-        options: OptionsOfJSONResponseBody = {
-            responseType: 'json',
-        },
+        options: OptionsOfJSONResponseBody = {},
     ): Promise<T> {
         return this.getToken().then((tokenValue: string) => {
             const secretPath: string = utils.resolveSecretPath(
@@ -97,9 +95,7 @@ export class VaultClient {
     public set<T>(
         key: string,
         value: T,
-        options: OptionsOfJSONResponseBody = {
-            responseType: 'json',
-        },
+        options: OptionsOfJSONResponseBody = {},
     ): Promise<void> {
         return this.getToken().then((tokenValue: string) => {
             const secret: string = utils.resolveSecretPath(
