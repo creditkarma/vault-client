@@ -58,7 +58,7 @@ function fetch(
                 case 404:
                     logger.error(`Resource not found[${requestOptions.url}]`)
                     return Promise.reject(
-                        new HVMissingResource(requestOptions.url as string),
+                        new HVMissingResource(requestOptions.url),
                     )
 
                 default:
