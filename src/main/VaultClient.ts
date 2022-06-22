@@ -1,4 +1,5 @@
-import { CoreOptions } from 'request'
+import { OptionsOfJSONResponseBody } from 'got'
+
 import { getToken } from './discovery'
 import { HVFail, HVInvalidResponse } from './errors'
 import * as logger from './logger'
@@ -15,7 +16,7 @@ export interface IVaultClientArgs {
     apiVersion?: 'v1'
     protocol?: HttpProtocol
     destination?: string
-    requestOptions?: CoreOptions
+    requestOptions?: OptionsOfJSONResponseBody
     mount?: string
     namespace?: string
     tokenPath?: string
@@ -55,7 +56,10 @@ export class VaultClient {
         })
     }
 
-    public get<T>(key: string, options: CoreOptions = {}): Promise<T> {
+    public get<T>(
+        key: string,
+        options: OptionsOfJSONResponseBody = {},
+    ): Promise<T> {
         return this.getToken().then((tokenValue: string) => {
             const secretPath: string = utils.resolveSecretPath(
                 this.mount,
@@ -91,7 +95,7 @@ export class VaultClient {
     public set<T>(
         key: string,
         value: T,
-        options: CoreOptions = {},
+        options: OptionsOfJSONResponseBody = {},
     ): Promise<void> {
         return this.getToken().then((tokenValue: string) => {
             const secret: string = utils.resolveSecretPath(

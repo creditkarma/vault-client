@@ -25,7 +25,7 @@ describe('TokenDiscovery', () => {
     }
 
     before(async () => {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
             fs.writeFile(tokenFilePath, tokenValue, (err: any) => {
                 resolve()
             })
@@ -33,7 +33,7 @@ describe('TokenDiscovery', () => {
     })
 
     after(async () => {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
             fs.unlink(tokenFilePath, (err) => {
                 resolve()
             })

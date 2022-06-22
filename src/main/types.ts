@@ -1,4 +1,4 @@
-import { CoreOptions } from 'request'
+import { OptionsOfJSONResponseBody } from 'got'
 
 export type HttpProtocol = 'http' | 'https'
 
@@ -6,14 +6,14 @@ export interface IServiceConfig {
     apiVersion: 'v1'
     protocol: HttpProtocol
     destination: string
-    requestOptions: CoreOptions
+    requestOptions: OptionsOfJSONResponseBody
 }
 
 export interface IHVConfig {
     apiVersion: 'v1'
     protocol: HttpProtocol
     destination: string
-    requestOptions: CoreOptions
+    requestOptions: OptionsOfJSONResponseBody
     mount: string
     namespace: string
     tokenPath: string
