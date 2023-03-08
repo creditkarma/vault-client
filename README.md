@@ -127,13 +127,7 @@ $ npm test
 You can spin up the Vault server without running tests:
 
 ```sh
-$ npm run docker
-```
-
-This docker image has a little sugar on top of the base Vault image. It exposes an endpoint for retrieving the token.
-
-```sh
-$ curl localhost:8201/client-token
+$ npm run build && npm run docker
 ```
 
 ## Contributing

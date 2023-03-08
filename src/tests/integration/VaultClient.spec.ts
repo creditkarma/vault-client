@@ -1,10 +1,9 @@
 import { expect } from '@hapi/code'
 import * as Lab from '@hapi/lab'
 import * as fs from 'fs'
-import { execSync } from 'child_process'
 import { VaultClient } from '../../main/VaultClient'
 import { IHVConfig } from '../../main/types'
-import { cleanLastChar } from '../../main/discovery'
+import { clientToken } from './bootstrap'
 
 export const lab = Lab.script()
 
@@ -28,14 +27,11 @@ describe('VaultClient', () => {
     const mockNum = 5
     const mockBool = true
     const mockObj = { value: 'bar' }
-    const token: string = cleanLastChar(
-        execSync('curl localhost:8201/client-token').toString(),
-    )
 
     // Client expects the token to be available in the local file system
     before(async () => {
         return new Promise<void>((resolve, reject) => {
-            fs.writeFile(mockConfig.tokenPath, token, (err: any) => {
+            fs.writeFile(mockConfig.tokenPath, clientToken, (err: any) => {
                 resolve()
             })
         })

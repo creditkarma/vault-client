@@ -1,9 +1,8 @@
 import { expect } from '@hapi/code'
 import * as Lab from '@hapi/lab'
-import { execSync } from 'child_process'
 import { VaultService } from '../../main/VaultService'
 import { IHVConfig } from '../../main/types'
-import { cleanLastChar } from '../../main/discovery'
+import { clientToken } from './bootstrap'
 
 export const lab = Lab.script()
 
@@ -22,13 +21,10 @@ describe('VaultService', () => {
     }
     const service = new VaultService(mockConfig)
     const mockObj = { value: 'bar' }
-    const token: string = cleanLastChar(
-        execSync('curl localhost:8201/client-token').toString(),
-    )
 
     describe('health', () => {
         it('should read the health status', async () => {
-            return service.health(token).then((res) => {
+            return service.health(clientToken).then((res) => {
                 expect(res.initialized).to.be.equal(true)
                 expect(res.sealed).to.be.equal(false)
                 expect(res.standby).to.be.equal(false)
@@ -61,13 +57,13 @@ describe('VaultService', () => {
 
     describe('write', () => {
         it('should write a secret to hvault', async () => {
-            return service.write('secret/mock', mockObj, token)
+            return service.write('secret/mock', mockObj, clientToken)
         })
     })
 
     describe('list', () => {
         it('should list all secret names', async () => {
-            return service.list(token).then((res: any) => {
+            return service.list(clientToken).then((res: any) => {
                 expect(res.data.keys).to.include('mock')
             })
         })
@@ -75,7 +71,7 @@ describe('VaultService', () => {
 
     describe('read', () => {
         it('should read an object from hvault', async () => {
-            return service.read('secret/mock', token).then((res: any) => {
+            return service.read('secret/mock', clientToken).then((res: any) => {
                 expect(res.data).to.equal(mockObj)
             })
         })
