@@ -18,13 +18,14 @@
         "lint": "eslint --fix './src/**/*.ts'",
         "format": "prettier --write 'src/**/*.ts'",
         "build": "npm run clean && npm run lint && npm run format && tsc",
-        "docker": "docker-compose up --force-recreate vault &",
+        "docker": "docker-compose up --force-recreate -d",
+        "postdocker": "node dist/tests/integration/bootstrap.js",
         "docker:kill": "docker-compose kill",
         "pretest": "npm run build && npm run docker",
         "posttest": "npm run docker:kill",
-        "test": "wait-on --timeout 20000 http://localhost:8201 && npm run lint && npm run test:unit && npm run test:integration",
+        "test": "wait-on --timeout 20000 http://localhost:8200 && npm run lint && npm run test:unit && npm run test:integration",
         "test:unit": "lab --typescript --timeout 10000 --verbose -l -S ./src/tests/unit/*.spec.ts",
-        "test:integration": "lab  --typescript --timeout 15000 --verbose -l -S ./src/tests/integration/*.spec.ts",
+        "test:integration": "lab --typescript --timeout 15000 --verbose -l -S ./src/tests/integration/*.spec.ts",
         "release:patch": "npm version patch && npm run release:publish",
         "release:minor": "npm version minor && npm run release:publish",
         "release:major": "npm version major && npm run release:publish",
@@ -55,5 +56,8 @@
         "@types/lodash": "^4.14.136",
         "got": "^11.8.3",
         "lodash": "^4.17.15"
+    },
+    "engines": {
+        "node": ">=16"
     }
 }

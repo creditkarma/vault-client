@@ -1,11 +1,12 @@
 version: '2'
 services:
   vault:
-    image: mannimal/vault-cci:latest
+    image: vault:1.13.0
     ports:
       - "8200:8200"
-      - "8201:8201"
     cap_add:
       - IPC_LOCK
+    environment:
+      - VAULT_DEV_ROOT_TOKEN_ID=root_token
     volumes:
       - ./vault/config.hcl:/vault/config.hcl
