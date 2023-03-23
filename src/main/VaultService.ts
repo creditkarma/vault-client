@@ -96,6 +96,7 @@ export class VaultService {
     }: IVaultServiceArgs) {
         this.defaultOptions = {
             responseType: 'json',
+            throwHttpErrors: false,
             ...requestOptions,
         }
         if (protocol === 'https') {

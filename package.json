@@ -53,9 +53,9 @@
         "wait-on": "^6.0.1"
     },
     "dependencies": {
-        "@types/lodash": "^4.14.136",
-        "got": "^11.8.3",
-        "lodash": "^4.17.15"
+        "got": "^11.8.6",
+        "@types/lodash": "^4.14.191",
+        "lodash": "^4.17.21"
     },
     "engines": {
         "node": ">=16"
