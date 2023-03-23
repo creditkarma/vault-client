@@ -1,5 +1,6 @@
 defaults: &defaults
   working_directory: ~/vault-client
+  machine: true
 
 helpers:
   install_node_16: &install_node_16
@@ -16,8 +17,7 @@ helpers:
         echo 'export NVM_DIR="/opt/circleci/.nvm"' >> $BASH_ENV
         echo "[ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\"" >> $BASH_ENV
 
-version: 2
-executorType: machine
+version: 2.1
 jobs:
   test:
     <<: *defaults
