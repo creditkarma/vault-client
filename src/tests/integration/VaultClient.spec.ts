@@ -1,9 +1,10 @@
-import { expect } from '@hapi/code'
+import { expect, fail } from '@hapi/code'
 import * as Lab from '@hapi/lab'
 import * as fs from 'fs'
 import { VaultClient } from '../../main/VaultClient'
 import { IHVConfig } from '../../main/types'
 import { clientToken } from './bootstrap'
+import { HVMissingResource } from '../../main/errors'
 
 export const lab = Lab.script()
 
@@ -86,6 +87,21 @@ describe('VaultClient', () => {
             return client.get('obj').then((res: any) => {
                 expect(res).to.equal(mockObj)
             })
+        })
+
+        it('should throw HVMissingResource error when reading a non-existing value from hvault', async () => {
+            return client.get('missing').then(
+                () => {
+                    fail('should have thrown HVMissingResource')
+                },
+                (err: any) => {
+                    expect(err).to.be.equal(
+                        new HVMissingResource(
+                            'http://localhost:8200/v1/secret/missing',
+                        ),
+                    )
+                },
+            )
         })
     })
 

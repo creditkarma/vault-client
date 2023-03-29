@@ -4,7 +4,7 @@ function isDebug(): boolean {
 
 export const log = (msg: string, data?: any) => {
     if (data !== undefined && isDebug()) {
-        console.log(`[vault-client:info]: ${msg}: `, data)
+        console.log(`[vault-client:info]: ${msg}: ${data}`)
     } else if (isDebug()) {
         console.log(`[vault-client:info]: ${msg}`)
     }
@@ -12,7 +12,7 @@ export const log = (msg: string, data?: any) => {
 
 export const warn = (msg: string, data?: any) => {
     if (data !== undefined && isDebug()) {
-        console.warn(`[vault-client:warn]: ${msg}: `, data)
+        console.warn(`[vault-client:warn]: ${msg}: ${data}`)
     } else if (isDebug()) {
         console.warn(`[vault-client:warn]: ${msg}`)
     }
@@ -20,7 +20,7 @@ export const warn = (msg: string, data?: any) => {
 
 export const error = (msg: string, data?: any) => {
     if (data !== undefined) {
-        console.error(`[vault-client:error]: ${msg}: `, data)
+        console.error(`[vault-client:error]: ${msg}: ${data}`)
     } else {
         console.error(`[vault-client:error]: ${msg}`)
     }
